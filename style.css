@@ -1,0 +1,60 @@
+body {
+    background-image:url('./Background.png');
+}
+
+#game {
+    display:flex;
+    font-size: 2.3em;
+    align-items:center;
+    justify-content:space-around;
+}
+#game select {
+    font-size: 0.6em;
+    border-radius: 30px;
+    padding: 10px;
+}
+#game div {
+    margin: 0px 90px;
+}
+h2 {
+    color:white;
+}
+canvas {
+    border-radius: 50px;
+    background-image: url('./img/background.png');
+    box-shadow: 10px 10px 10px rgb(120, 120, 120);
+}
+#click  {
+    border-radius:100px;
+    background:linear-gradient(0deg, rgb(255, 229, 35), rgb(255, 164, 17) 40%, rgb(255, 77, 0));
+    transition:1s;
+}
+#click:hover {
+    box-shadow: 5px 5px 10px black;
+}
+#click img {
+    width:300px;
+    height:auto;
+    padding: 10px;
+}
+
+#overlay {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    background-color: rgba(0,0,0,0.5);
+    width: 100vw;
+    height:100vh;
+}
+#name {
+    justify-content:center;
+    align-items:center;
+    padding: 20px;
+    width:300px;
+    height:auto;
+    font-family: monospace;
+    background-color:black;
+    color:white;
+    border-radius: 20px;
+
+}

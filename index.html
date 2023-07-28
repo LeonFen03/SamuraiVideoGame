@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            * {
+                box-sizing: border-box;
+                font-family:monospace;
+            }
+        </style>
+    <link rel="stylesheet" href="./style.css">
+    <script src="//unpkg.com/brain.js"></script>
+    </head>
+    <body>
+        <div>
+            <div id="overlay"> 
+                <h2 id="score">Total Points: 0</h2>
+                <div id="center" style="position: relative; width: 1024px;" >
+                    <div id="displayText" style="display:none; align-items:center; justify-content:center; position:absolute;color:white;font-size: 2.1em; padding: 10px;top: 0; right: 0; bottom: 0; left: 0;"><div id="name">Tie</div></div>
+                    <div id="gameContainer" style="display:flex; opacity:0; position:absolute;  width: 100%; align-items:center; padding: 20px;">
+                        <div style="position:relative; height: 30px; width: 100%; display:flex; justify-content:flex-end">
+                            <div style=" border:2px solid black; background-color:rgb(150, 0, 0); height: 30px; width: 100%;">
+                            </div>
+                            <div id="playerHealth" style="border:2px solid black; position:absolute; background-color:yellow; height: 30px; width: 100%; top:0;">
+                            </div>
+                            <h2 id="fighterU" style="position:absolute; top:10px;right:100px"></h2>
+                        </div>
+        
+                        <div id="timer" style="font-family: monospace; border: 2px solid black; font-size: 2.6em;background: linear-gradient(to left, rgb(129, 129, 129), red); width: 150px;height: 100px; flex-shrink:0; border-radius: 30px; display:flex; align-items:center;justify-content:center;color:white;">
+                            10
+                        </div>
+                        <div style="position:relative; height: 30px; width: 100%;">
+                            <div style="border:2px solid black; background-color:rgb(150, 0, 0); height: 30px;">
+                        
+                            </div>
+                            <div id="enemyHealth" style="border:2px solid black; position:absolute; background-color:yellow; height: 30px; width: 100%; top:0">
+                            <h2 id="fighterC" style="position:absolute; top:10px;left:100px"></h2>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    <canvas width="1024" height="576">
+                    </canvas>
+                    <div id="globe" style="position:absolute; z-index:10; bottom:150px; left:370px;display: flex;flex-direction: column; align-items:center;" >
+                        <button  id="click"><img src="./img/buttonimg.png"></button>
+                        <img width="200px" height="auto" src="./globe.gif"/>
+                    </div>
+                    <script src="./classes.js" defer></script>
+                    <script src="./js/utils.js" defer></script>
+                    <script src="./index.js" defer></script>
+                </div>
+                <form id="game">
+                    <div>
+                        <label for="playerU"><h2>Fighter 1 (You):</h2></label>
+                        <select name="playerU" id="playerU">
+                            <option value="samuraiMack" >Samurai Mack</option>
+                            <option value="tarzan">Tarzan</option>
+                        </select>
+
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items: center;">
+                        <label for="playerC"><h2>Fighter 2 (Second User):</h2></label>
+                        <select style="width:200px;" name="playerC" id="playerC">
+                            <option value="kenji" >kenji</option>
+                        </select>
+                        <div>
+                            <select id="settings" name="player2">
+                                <option  value="computer">Computer</option>
+                                <option  value="secondUser">Second User</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+                </form>
+                </div>
+               
+        </div>
+        
+    </body>
+</html>
