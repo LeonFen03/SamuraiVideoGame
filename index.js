@@ -3,7 +3,7 @@ let c = canvas.getContext('2d');
 const gravity = .7;
 let gameOver = true;
 let UserWins = 0;
-let playerSpeed = 7;
+let playerSpeed = 5;
 let restartGamev = false;
 document.querySelector('#playerU').value = 'samuraiMack';
 document.querySelector('#playerC').value = 'kenji';
@@ -51,10 +51,10 @@ async function main() {
     document.querySelector('#fpsSlider').addEventListener('change',(event)=>{
         const {value} = event.target;
         player.framesHold = value;
-        if (playerSpeed > 10){
-            playerSpeed = 6;
-        }
         playerSpeed = playerSpeed + (playerSpeed - value);
+        if (playerSpeed > 10 || playerSpeed < 0){
+            playerSpeed = 5;
+        }
         enemy.framesHold = value;
     });
     
