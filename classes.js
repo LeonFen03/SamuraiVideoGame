@@ -53,7 +53,8 @@ const unlockPlayers = {
             },
             width: 100,
             height:50
-        }
+        },
+        animSpeed:5
     },
     kenji:  {
         position: {
@@ -108,7 +109,8 @@ const unlockPlayers = {
             },
             width: 100,
             height:50
-        }
+        },
+        animSpeed:5
     },
     tarzan: {
         position: {
@@ -122,7 +124,7 @@ const unlockPlayers = {
             x: 215,
             y:50
         }, 
-        imageSrc: './img/tarzan/idle.png',
+        imageSrc: './img/tarzan/Idle.png',
         scale:2.5,
         framesMax:10,
         sprites: {
@@ -164,7 +166,7 @@ const unlockPlayers = {
             width: 100,
             height:50
         }
-    }
+    },
 }
 const backgrounds = {
     OakWoods: {
@@ -178,7 +180,7 @@ const backgrounds = {
                 x: 600,
                 y:128
             }
-        ,imageSrc: './img/shop.png', scale:2.75,framesMax:6}
+        ,imageSrc: './img/shop.png', scale:2.75,framesMax:6,animSpeed:10}
     }
 
 }
@@ -186,7 +188,7 @@ const backgrounds = {
 
 
 class Sprite {
-    constructor ({position, imageSrc,scale = 1, framesMax = 1, offset = {x:0,y:0}}) {
+    constructor ({position, imageSrc,scale = 1, framesMax = 1, offset = {x:0,y:0}, animSpeed}) {
         this.position = position;
         this.image = new Image();
         this.image.src = imageSrc;
@@ -196,7 +198,7 @@ class Sprite {
         this.height = 150;
         this.framesMax = framesMax;
         this.framesElapsed = 0;
-        this.framesHold = 10;
+        this.framesHold = animSpeed;
         this.offset = offset;
     }
     draw() {
@@ -231,7 +233,7 @@ class Sprite {
 }
 
 class Fighter extends Sprite {
-    constructor ({position, velocity,offset, imageSrc,scale = 1, framesMax = 1, sprites,attackBox = {offset:{},width:undefined, height:undefined}}) {
+    constructor ({position, velocity,offset, imageSrc,scale = 1, framesMax = 1, sprites,attackBox = {offset:{},width:undefined, height:undefined, },animSpeed}) {
         super({ position, imageSrc, scale, framesMax, offset})
         this.velocity = velocity;
         this.width = 50;
@@ -241,7 +243,7 @@ class Fighter extends Sprite {
         this.lastKey;
         this.framesCurrent = 0;
         this.framesElapsed = 0;
-        this.framesHold = 7;
+        this.framesHold = 5;
         this.isAttacking;
         this.sprites = sprites;
         for (const sprite in sprites) {

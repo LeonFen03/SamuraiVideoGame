@@ -5,6 +5,17 @@ function rectangularCollision (player,enemy) {
         player.attackBox.position.y + player.attackBox.height >= enemy.position.y && 
         player.attackBox.position.y <= enemy.position.y + enemy.height)
 }
+document.getElementById('clicky').addEventListener('click',function () {
+    const display = document.getElementById('setting').style.display;
+    if (display === 'none'){
+        document.getElementById('setting').style.display = 'flex';
+        document.getElementById('clicky').innerHTML = 'Hide Settings';
+    } else {
+        document.getElementById('setting').style.display = 'none';
+        document.getElementById('clicky').innerHTML = 'Show Settings';
+    }
+    
+})
 let timer = 60;
 
 function getWinnerName(camelCased) {
@@ -25,7 +36,7 @@ function determineWinner(player,enemy, timerId) {
         document.querySelector('#name').textContent = `${getWinnerName(document.getElementById('playerC').value)} Wins!`;
     } 
     if (enemy.health < player.health) {
-        document.querySelector('#name').textContent = `You Win!`;
+        document.querySelector('#name').textContent = `${getWinnerName(document.getElementById('playerU').value)} Wins!`;
         if (player.framesCurrent === 1) {
             UserWins++;
         }

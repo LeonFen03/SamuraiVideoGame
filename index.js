@@ -3,6 +3,7 @@ let c = canvas.getContext('2d');
 const gravity = .7;
 let gameOver = true;
 let UserWins = 0;
+let playerSpeed = 7;
 let restartGamev = false;
 document.querySelector('#playerU').value = 'samuraiMack';
 document.querySelector('#playerC').value = 'kenji';
@@ -47,7 +48,15 @@ async function main() {
     let player = player1;
     let enemy = player2;
     let background = backgroundg;
-    
+    document.querySelector('#fpsSlider').addEventListener('change',(event)=>{
+        const {value} = event.target;
+        player.framesHold = value;
+        if (playerSpeed > 10){
+            playerSpeed = 6;
+        }
+        playerSpeed = playerSpeed + (playerSpeed - value);
+        enemy.framesHold = value;
+    });
     
 function Animate() {
     if (!gameOver) {
@@ -63,11 +72,11 @@ function Animate() {
     enemy.velocity.x = 0;
     //player movement
     if (keys.a.pressed && player.lastKey === 'a' ) {
-        player.velocity.x = -5;
+        player.velocity.x = -playerSpeed;
         player.switchSprite('run')
     }  else if (keys.d.pressed && player.lastKey === 'd') {
         player.switchSprite('run')
-        player.velocity.x = 5;
+        player.velocity.x = playerSpeed;
     } else {
         player.switchSprite(player.state);
         
@@ -82,10 +91,10 @@ function Animate() {
 
 
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
-        enemy.velocity.x = -5;
+        enemy.velocity.x = -playerSpeed;
         enemy.switchSprite('run')
     } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
-        enemy.velocity.x = 5;
+        enemy.velocity.x = playerSpeed;
         enemy.switchSprite('run')
     } else {
         enemy.switchSprite(enemy.state);
@@ -124,11 +133,11 @@ function Animate() {
                   }
                  if (player.position.x < enemy.position.x) {
                   setTimeout(()=>{
-                      enemy.velocity.x = -3;
+                      enemy.velocity.x = -playerSpeed;
                   },450)
                  } else if (player.position.x >= enemy.position.x) {
                   setTimeout(()=>{
-                      enemy.velocity.x = 3;
+                      enemy.velocity.x = playerSpeed;
                   },450)
                  }
              }
