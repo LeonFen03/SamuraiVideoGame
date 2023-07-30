@@ -2,8 +2,9 @@ let canvas = document.querySelector('canvas');
 let c = canvas.getContext('2d');
 const gravity = .7;
 let gameOver = true;
+let pauseGame = false;
 let UserWins = 0;
-let playerSpeed = 5;
+let playerSpeed = (10 - document.getElementById('fpsSlider').value);
 let restartGamev = false;
 document.querySelector('#playerU').value = 'samuraiMack';
 document.querySelector('#playerC').value = 'kenji';
@@ -48,18 +49,17 @@ async function main() {
     let player = player1;
     let enemy = player2;
     let background = backgroundg;
-    document.querySelector('#fpsSlider').addEventListener('change',(event)=>{
+    document.querySelector('#fpsSlider').addEventListener('click',(event)=>{
         const {value} = event.target;
         player.framesHold = value;
-        playerSpeed = playerSpeed + (playerSpeed - value);
+        enemy.framesHold = value;
+        playerSpeed = (10 - value);
         if (playerSpeed > 10 || playerSpeed < 0){
             playerSpeed = 5;
         }
-        enemy.framesHold = value;
     });
-    
 function Animate() {
-    if (!gameOver) {
+    if (!gameOver && !pauseGame) {
         window.requestAnimationFrame(Animate);
     } 
     c.fillStyle = 'black';
@@ -160,6 +160,15 @@ function Animate() {
         break
         case ' ':
             player.attack(enemy);
+        break;
+        case 'Enter':
+            const toggle = popup2();
+            clearTimeout(timerId);
+            if (!toggle) {
+                decreaseTimer();
+            }
+            pauseGame = !pauseGame;
+            Animate()
         break;
        }
        if (document.querySelector('#settings').value === 'secondUser') {

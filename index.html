@@ -16,8 +16,8 @@
                 
                 <div id="setting"style="position:relative;display:flex;flex-direction: column;">
                     <h2>Adjust Animation Speed:</h2>
-                    <span style="position:absolute; bottom:35px;">30fps</span><span style="position:absolute; left:180px; bottom:35px;">11fps</span>
-                    <input type="range" value="9" min="0" max="10" id="fpsSlider" /> <br />
+                    <span style="position:absolute; bottom:35px;">Faster</span><span style="position:absolute; left:180px; bottom:35px;">Slower</span>
+                    <input type="range" value="5" min="0" max="10" id="fpsSlider" /> <br />
                 </div>
                 
                 <button id="clicky">Hide Settings</button>
@@ -51,6 +51,14 @@
                     <div id="globe" style="position:absolute; z-index:10; bottom:150px; left:370px;display: flex;flex-direction: column; align-items:center;" >
                         <button  id="click"><img src="./img/buttonimg.png"></button>
                         <img width="200px" height="auto" src="./globe.gif"/>
+                        <i id="Instructions" style="cursor:pointer; text-decoration: underline; background-color: white; padding: 5px; border-radius:10px;">Click for Instructions</i>
+                        <div  style="display:none;" id="popup">
+                            <p>Fighter 1: W - Jump, A - Move left, D - Move Right, SpaceBar - Attack </p><br /> <p> Fighter 2 (SecondUser):  ArrowUp - Jump, ArrowLeft - Move left, ArrowRight - Move Right, ArrowDown - Attack</p>
+                            <p>Objective: You are hired to takedown a Samurai, in spite being independent of known terroist groups his violence reap political ramifications on the social order of a developing Village. Kill him.</p>
+                        </div>
+                    </div>
+                    <div style="display:none;" id="paused">
+                        PAUSED
                     </div>
                     <script src="./classes.js" defer></script>
                     <script src="./js/utils.js" defer></script>
