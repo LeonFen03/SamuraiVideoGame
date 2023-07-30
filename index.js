@@ -7,6 +7,7 @@ let playerSpeed = 5;
 let restartGamev = false;
 document.querySelector('#playerU').value = 'samuraiMack';
 document.querySelector('#playerC').value = 'kenji';
+document.querySelector('#fpsSlider') = playerSpeed;
 let player1Name = document.querySelector('#playerU').value;
 let player2Name = document.querySelector('#playerC').value;
 document.querySelector('#settings').value = 'computer';
