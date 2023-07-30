@@ -51,11 +51,11 @@ async function main() {
     document.querySelector('#fpsSlider').addEventListener('change',(event)=>{
         const {value} = event.target;
         player.framesHold = value;
+        enemy.framesHold = value;
         playerSpeed = playerSpeed + (playerSpeed - value);
         if (playerSpeed > 10 || playerSpeed < 0){
             playerSpeed = 5;
         }
-        enemy.framesHold = value;
     });
     
 function Animate() {
