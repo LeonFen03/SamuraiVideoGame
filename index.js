@@ -2,6 +2,7 @@ let canvas = document.querySelector('canvas');
 let c = canvas.getContext('2d');
 const gravity = .7;
 let gameOver = true;
+let pauseGame = false;
 let UserWins = 0;
 let playerSpeed = (10 - document.getElementById('fpsSlider').value);
 let restartGamev = false;
@@ -57,9 +58,8 @@ async function main() {
             playerSpeed = 5;
         }
     });
-    
 function Animate() {
-    if (!gameOver) {
+    if (!gameOver && !pauseGame) {
         window.requestAnimationFrame(Animate);
     } 
     c.fillStyle = 'black';
@@ -160,6 +160,15 @@ function Animate() {
         break
         case ' ':
             player.attack(enemy);
+        break;
+        case 'Enter':
+            const toggle = popup2();
+            clearTimeout(timerId);
+            if (!toggle) {
+                decreaseTimer();
+            }
+            pauseGame = !pauseGame;
+            Animate()
         break;
        }
        if (document.querySelector('#settings').value === 'secondUser') {
