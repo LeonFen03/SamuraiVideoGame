@@ -1,4 +1,4 @@
-
+let timer = 60;
 function rectangularCollision (player,enemy) {
     return (player.attackBox.position.x + player.attackBox.width >= enemy.attackBox.position.x && 
         player.attackBox.position.x  <= enemy.position.x + enemy.width && 
@@ -16,8 +16,22 @@ document.getElementById('clicky').addEventListener('click',function () {
     }
     
 })
-let timer = 60;
 
+function eventHanderFunction(ID) {
+    return function () {
+        const popUp =  document.getElementById(ID).style;
+        if (popUp.display === 'none') {
+             popUp.display = 'block';
+             return true;
+        } else {
+             popUp.display = 'none';
+             return false;
+        }
+     }
+}
+const popup1 = eventHanderFunction('popup');
+const popup2 = eventHanderFunction('paused');
+document.getElementById('Instructions').addEventListener('click', popup1);
 function getWinnerName(camelCased) {
     const obj = {
         samuraiMack: 'Samurai Mack',
