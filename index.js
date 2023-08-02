@@ -140,7 +140,7 @@ function Animate() {
         enemy.takeHit(player);
         player.isAttacking = false;
         player.isAttacking2 = false;
-        SoundEffect('ow.wav',0.4)
+        SoundEffect('ow.wav',0.5)
         document.querySelector('#enemyHealth').style.width = enemy.health + '%';
     } 
     if (rectangularCollision(enemy,player) && (enemy.isAttacking || enemy.isAttacking2)  && enemy.framesCurrent === 2) {
