@@ -1,4 +1,4 @@
-
+// Characters to choose from!
 const unlockPlayers = {
     samuraiMack: {
         position: {
@@ -34,7 +34,15 @@ const unlockPlayers = {
             },
             Attack: {
                 imagesSrc:'./img/samuraiMack/Attack1.png',
-                framesMax:6
+                framesMax:6,
+                Damage:4,
+                Audio:'woosh.wav'
+            },
+            Attack2: {
+                imagesSrc:'./img/samuraiMack/Attack2.png',
+                framesMax:6,
+                Damage:9,
+                Audio:'cling.wav'
             },
             Hit: {
                 imagesSrc:'./img/samuraiMack/TakeHit.png',
@@ -54,7 +62,11 @@ const unlockPlayers = {
             width: 100,
             height:50
         },
-        animSpeed:5
+        animSpeed:5,
+        stats: {
+            width: 50,
+            height: 150
+        }
     },
     kenji:  {
         position: {
@@ -90,7 +102,14 @@ const unlockPlayers = {
             },
             Attack: {
                 imagesSrc:'./img/kenji/Attack1.png',
-                framesMax:4
+                framesMax:4,
+                Damage:5,
+                Audio:'woosh.wav'
+            },
+            Attack2: {
+                imagesSrc:'./img/kenji/Attack2.png',
+                framesMax:4,
+                Damage:10
             },
             Hit: {
                 imagesSrc:'./img/kenji/TakeHit.png',
@@ -110,7 +129,11 @@ const unlockPlayers = {
             width: 100,
             height:50
         },
-        animSpeed:5
+        animSpeed:5,
+        stats: {
+            width: 50,
+            height: 150
+        }
     },
     tarzan: {
         position: {
@@ -146,7 +169,15 @@ const unlockPlayers = {
             },
             Attack: {
                 imagesSrc:'./img/tarzan/Attack1.png',
-                framesMax:7
+                framesMax:7,
+                Damage:5,
+                Audio:'cling.wav'
+            },
+            Attack2: {
+                imagesSrc:'./img/tarzan/Attack3.png',
+                framesMax:9,
+                Damage:10,
+                Audio:'cling.wav'
             },
             Hit: {
                 imagesSrc:'./img/tarzan/TakeHit.png',
@@ -165,6 +196,77 @@ const unlockPlayers = {
             },
             width: 100,
             height:50
+        },
+        stats: {
+            width: 50,
+            height: 150
+        }
+    },
+    Leon: {
+        position: {
+            x: 0, y:0 
+        }, 
+        velocity:{
+            x: 0,
+            y:0
+        },
+        offset:{
+            x: 215,
+            y:110
+        }, 
+        imageSrc: './img/Fire/Idle.png',
+        scale:2,
+        framesMax:7,
+        sprites: {
+            idle:{
+                imagesSrc: './img/Fire/Idle.png',
+                framesMax:7
+            },
+            Run: {
+                imagesSrc: './img/Fire/Run.png',
+                framesMax:8
+            },
+            Jump: {
+                imagesSrc: './img/Fire/Jump.png',
+                framesMax:9
+            },
+            Fall: {
+                imagesSrc: './img/Fire/Jump.png',
+                framesMax:9
+            },
+            Attack: {
+                imagesSrc:'./img/Fire/Attack_2.png',
+                framesMax:4,
+                Damage:7,
+                Audio:'woosh.wav'
+            },
+            Attack2: {
+                imagesSrc:'./img/Fire/Flame_jet.png',
+                framesMax:14,
+                Damage:25,
+                Audio:'fireball.mp3'
+            },
+            Hit: {
+                imagesSrc:'./img/Fire/Hurt.png',
+                framesMax: 3
+            },
+            Death: {
+                imagesSrc:'./img/Fire/Dead.png',
+                framesMax: 6
+            }
+        },
+        attackBox:{
+            offset: {
+                x: 100,
+                y:50
+            },
+            width: 100,
+            height:51
+        },
+        animSpeed:10,
+        stats: {
+            width: 50,
+            height: 150
         }
     },
 }
@@ -180,28 +282,31 @@ const backgrounds = {
                 x: 600,
                 y:128
             }
-        ,imageSrc: './img/shop.png', scale:2.75,framesMax:6,animSpeed:10}
+        ,imageSrc: './img/shop.png', scale:2.75,framesMax:6,animSpeed:10},stats:{width:50,height:150}
     }
 
 }
 
 
-
+// The object defining the disposition of a sprite on canvas
 class Sprite {
-    constructor ({position, imageSrc,scale = 1, framesMax = 1, offset = {x:0,y:0}, animSpeed}) {
+    constructor ({position, imageSrc,scale = 1, framesMax = 1, offset = {x:0,y:0}, animSpeed, stats={width:50,height:150}}) {
+        // Declare properties for how it's drawn and animation preference
         this.position = position;
         this.image = new Image();
         this.image.src = imageSrc;
         this.framesCurrent = 0;
         this.scale = scale;
-        this.width = 50;
-        this.height = 150;
+        this.width = stats.width;
+        this.height = stats.height;
         this.framesMax = framesMax;
         this.framesElapsed = 0;
         this.framesHold = animSpeed;
         this.offset = offset;
     }
+    // draw method
     draw() {
+        // Utilizes method on canvas to draw according the the frame it should be on based on current frame, handles height and width. Position defined last with offset if assigned with.
         c.drawImage(this.image,
             this.framesCurrent * (this.image.width / this.framesMax),0,this.image.width / this.framesMax,this.image.height,
             this.position.x - this.offset.x,this.position.y - this.offset.y,(this.image.width / this.framesMax) * this.scale,this.image.height*this.scale);
@@ -217,7 +322,7 @@ class Sprite {
             }
         }
     }
-    
+    // Organizes how the frame should be animated, and adjusts for framerate. Increase Elapsed value until it reaches desired length of frame hold than animate by 1 frame.
     update() {
       this.draw();
       this.framesElapsed++;
@@ -231,20 +336,23 @@ class Sprite {
       }
      
 }
-
+// Extension of Sprite class use to define properties unique to a fighter on canvas.
 class Fighter extends Sprite {
-    constructor ({position, velocity,offset, imageSrc,scale = 1, framesMax = 1, sprites,attackBox = {offset:{},width:undefined, height:undefined, },animSpeed}) {
+    constructor ({position, velocity,offset, imageSrc,scale = 1, framesMax = 1, sprites,attackBox = {offset:{},width:undefined, height:undefined, },animSpeed, stats}) {
+        // Object properties for the fighter.
         super({ position, imageSrc, scale, framesMax, offset})
         this.velocity = velocity;
-        this.width = 50;
-        this.height = 150;
+        this.width = stats.width;
+        this.height = stats.height;
         this.health = 100;
         this.state = 'idle';
         this.lastKey;
+        this.cheatCode = false;
         this.framesCurrent = 0;
         this.framesElapsed = 0;
         this.framesHold = 5;
         this.isAttacking;
+        this.isAttacking2;
         this.sprites = sprites;
         for (const sprite in sprites) {
             sprites[sprite].image = new Image();
@@ -261,17 +369,31 @@ class Fighter extends Sprite {
             height: attackBox.height,
         }
     }
-    attack () {
-        this.switchSprite('attack');
-        this.isAttacking = true;
+    //Attack
+    attack (key) {
+        if (key === ' ' || key === 'ArrowDown' ) {
+            this.switchSprite('attack');
+            this.isAttacking = true;
+        } else if (key === 'm' || key === 'Shift') {
+            this.switchSprite('attack2');
+            this.isAttacking2 = true;
+        }
+        
     }
-    takeHit() {
-        this.health -= 5;
+    //Handles how the fighter recieves damage from enemy
+    takeHit(enemy) {
+        if (enemy.isAttacking) {
+            this.health -=  [1,2,1,enemy.sprites.Attack.Damage][Math.floor(Math.random()*4)];
+        } else if (enemy.isAttacking2) {
+            if (enemy.sprites.Attack2.Damage > 10) {
+                this.health -= enemy.sprites.Attack2.Damage;
+            } else {
+                this.health -= [1,1,enemy.sprites.Attack2.Damage][Math.floor(Math.random()*3)];
+            }
+            
+        }
         if (this.health <= 0) {
             this.state = 'death';
-            setTimeout(()=>{
-                this.health = 100;
-            },2000)
         } else {
             this.state = 'takeHit';
             setTimeout(()=> {
@@ -280,6 +402,7 @@ class Fighter extends Sprite {
 
         }
     }
+    // Update method used to account for animation of movement and location on canvas
     update() {
       this.draw();
       if (this.image === this.sprites.Death.image && this.framesCurrent === this.sprites.Death.framesMax - 1) {
@@ -292,15 +415,26 @@ class Fighter extends Sprite {
       this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
       this.position.x += this.velocity.x;
       this.position.y += this.velocity.y;
+      // Gravity
       if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
         this.velocity.y = 0;
         this.position.y = 330;
       } else this.velocity.y += gravity;
     }
+    // Sprite case per animation requested .
     switchSprite(input) {
-        if (this.image === this.sprites.Attack.image && this.framesCurrent < this.sprites.Attack.framesMax - 1) {
+        // Current fight move.
+        let attack = this.sprites.Attack;
+        if (this.image === this.sprites.Attack.image) {
+            attack = this.sprites.Attack;
+        } else if (this.image === this.sprites.Attack2.image) {
+            attack = this.sprites.Attack2;
+        }
+        // If animation is on attack or death do not allow for a switch
+        if ( this.image === attack.image && this.framesCurrent < attack.framesMax - 1) {
             return;
         }
+
         if (this.image === this.sprites.Death.image && this.framesCurrent <= this.sprites.Death.framesMax - 1) {
             return;
         }
@@ -353,6 +487,13 @@ class Fighter extends Sprite {
                         this.framesCurrent = 0;
                     }   
                 break;
+                case 'attack2':
+                    if (this.image !== this.sprites.Attack2.image) {
+                        this.image = this.sprites.Attack2.image;
+                        this.framesMax = this.sprites.Attack2.framesMax;
+                        this.framesCurrent = 0;
+                    }   
+                break;
         }
     
         
@@ -360,7 +501,7 @@ class Fighter extends Sprite {
 }
 
 
-
+// Declare the main players and background for game session.
 function startGame (playerOne ="samuraiMack",playerTwo="kenji",background) {
     let player1 = new Fighter(unlockPlayers[playerOne]);
     let player2 = new Fighter(unlockPlayers[playerTwo]);

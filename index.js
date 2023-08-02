@@ -1,16 +1,21 @@
-let canvas = document.querySelector('canvas');
-let c = canvas.getContext('2d');
+// Global variable declarations, and default settings
 const gravity = .7;
 let gameOver = true;
 let pauseGame = false;
 let UserWins = 0;
-let playerSpeed = (10 - document.getElementById('fpsSlider').value);
+let music = true;
 let restartGamev = false;
+let canvas = document.querySelector('canvas');
+let c = canvas.getContext('2d');
+const songs = ['ultimateFighter.mp3','boss.mp3','fighter1.mp3','fighter2.mp3']
 document.querySelector('#playerU').value = 'samuraiMack';
 document.querySelector('#playerC').value = 'kenji';
+let playerSpeed = (10 - document.getElementById('fpsSlider').value);
 let player1Name = document.querySelector('#playerU').value;
 let player2Name = document.querySelector('#playerC').value;
 document.querySelector('#settings').value = 'computer';
+
+// Capturing key use to determined player's immediate movement.
 const keys = {
     a: {
         pressed:false
@@ -25,6 +30,10 @@ const keys = {
         pressed: false
     }
 }
+
+
+
+// Asynchronous function
 async function main() { 
     document.querySelector('#playerU').addEventListener('change',(event)=>{
         const {value} = event.target;
@@ -34,21 +43,37 @@ async function main() {
         const {value} = event.target;
         player2Name = value;
     });
+    // Declaration of game variables awaiting click before initalizing players based on settings.
     let [player1,player2,backgroundg,shop] = await new Promise((resolve) => {
-        document.getElementById('click').addEventListener('click', (event)=>{
+        document.getElementById('click').addEventListener('click', ()=>{
+            // Resolving the player objects representing the sprites drawn on campus
             resolve(startGame(player1Name,player2Name,'OakWoods'));
             gameOver = !gameOver;
-            document.getElementById('globe').style.display = 'none';
+            // Reflect names of chosen players
             document.querySelector('#fighterU').innerHTML = getWinnerName(player1Name);
             document.querySelector('#fighterC').innerHTML = getWinnerName(player2Name);
+            // Play music stored in folder, descrease timer
+            let audio = new Audio(`./audio/${songs[Math.floor(Math.random()*songs.length)]}`);
+            audio.volume = 0.45;
+            audio.play();
+            audio.remove();
+            audio.play();
             decreaseTimer();
+            // Fade in Character healthbars and timer, start animation for game
             document.getElementById('gameContainer').animate({opacity:'1'},{duration:1000,fill:'forwards'});
+            document.getElementById('globe').style.display = 'none';
+
             Animate();
         });
     })
+    // New variables referencing the resolved canvas objects
     let player = player1;
     let enemy = player2;
     let background = backgroundg;
+    // Making sure setting doesn't change during game.
+    let user2 = document.querySelector('#settings').value;
+
+    // Slider Adjusting for Player/Player2 Animation and speed
     document.querySelector('#fpsSlider').addEventListener('click',(event)=>{
         const {value} = event.target;
         player.framesHold = value;
@@ -58,10 +83,15 @@ async function main() {
             playerSpeed = 5;
         }
     });
+//Animation definition function ultilizing canvas objects, must be declared here in order to use the variables just recently defined.
+// Doing otherwise such as entering variables as arguments inside animate will result mess with requestAnimationFrame functionality.
+
 function Animate() {
+    // Triggered to check when game is over and pause button was pressed.
     if (!gameOver && !pauseGame) {
         window.requestAnimationFrame(Animate);
     } 
+    // Methods used to handle Animation in regards to characters and canvas background
     c.fillStyle = 'black';
     c.fillRect(0,0,canvas.width,canvas.height);
     background.update();
@@ -70,7 +100,8 @@ function Animate() {
     enemy.update();
     player.velocity.x  = 0;
     enemy.velocity.x = 0;
-    //player movement
+
+    //  Handling responses to player movements when key is pressed.
     if (keys.a.pressed && player.lastKey === 'a' ) {
         player.velocity.x = -playerSpeed;
         player.switchSprite('run')
@@ -83,13 +114,12 @@ function Animate() {
     }
 
     if (player.velocity.y < 0) {
-        player.switchSprite('jump')
+        player.switchSprite('jump');
     } else if (player.velocity > 0) {
-        player.switchSprite('fall')
+        player.switchSprite('fall');
     }
-    // enemy movement
 
-
+    // Handling responses to enemy movements when key is pressed.
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
         enemy.velocity.x = -playerSpeed;
         enemy.switchSprite('run')
@@ -105,29 +135,37 @@ function Animate() {
         enemy.switchSprite('fall')
     }
 
-
-    if (rectangularCollision(player,enemy) && player.isAttacking && player.framesCurrent === 4) {
-        enemy.takeHit();
+    // Handles Collision between attack box's of enemies and players determing outcome based on if an attacked occured
+    if (rectangularCollision(player,enemy) && (player.isAttacking || player.isAttacking2)  && player.framesCurrent === 4) {
+        enemy.takeHit(player);
         player.isAttacking = false;
+        player.isAttacking2 = false;
+        SoundEffect('ow.wav',0.4)
         document.querySelector('#enemyHealth').style.width = enemy.health + '%';
     } 
-    if (rectangularCollision(enemy,player) && enemy.isAttacking  && enemy.framesCurrent === 2) {
-        player.takeHit();
+    if (rectangularCollision(enemy,player) && (enemy.isAttacking || enemy.isAttacking2)  && enemy.framesCurrent === 2) {
+        player.takeHit(enemy);
         enemy.isAttacking = false;
+        enemy.isAttacking2 = false;
         document.querySelector('#playerHealth').style.width = player.health + '%';
     } 
+    // How to handle low health in regards to either character.
     if (enemy.health <= 0 || player.health <= 0) {
         determineWinner(player,enemy,timerId);
     }
-    if (document.querySelector('#settings').value === 'computer') {
+    // Automated attacks based on the settings current option.
+    if (user2 === 'computer') {
+        const Attack = Math.random()* 11;
         if (rectangularCollision(enemy,player)) {
-    
-            const Attack = Math.floor(Math.random()* 10);
-             enemy.attack();
-             if (Attack > 7 ) {
+
+             enemy.attack(' ');
+             if (Attack > 4 ) {
               enemy.velocity.y = -20;
              }
              } else {
+                  if (Attack < 0.4) {
+                    enemy.attack('m');
+                  }
                   if (!(enemy.health <= 2)) {
                       enemy.state = 'run';
                   }
@@ -143,10 +181,15 @@ function Animate() {
              }
           }   
     }
-   
+   // Key events for attacks, and current movement, must be declared in main function for variable access.
     window.addEventListener('keydown', (event) => {
         console.log(event.key)
        switch (event.key) {
+        case 'm':
+            //Special Attack
+            player.attack('m');
+            SoundEffect(player.sprites.Attack2.Audio,0.3);
+        break
         case 'd':
             keys.d.pressed = true;
             player.lastKey = 'd';
@@ -156,12 +199,16 @@ function Animate() {
             player.lastKey = 'a'; 
         break
         case 'w':
+            // Move Up
             player.velocity.y = -20;
         break
         case ' ':
-            player.attack(enemy);
+            // Attack
+            player.attack(' ');
+            SoundEffect(player.sprites.Attack.Audio,0.3)
         break;
         case 'Enter':
+            // Pause
             const toggle = popup2();
             clearTimeout(timerId);
             if (!toggle) {
@@ -171,7 +218,8 @@ function Animate() {
             Animate()
         break;
        }
-       if (document.querySelector('#settings').value === 'secondUser') {
+       //If user chose local player 
+       if (user2 === 'secondUser') {
             switch(event.key) {
                 case 'ArrowRight':
                     keys.ArrowRight.pressed = true;
@@ -185,7 +233,7 @@ function Animate() {
                     enemy.velocity.y = -20;
                 break
                 case 'ArrowDown':
-                    enemy.attack(player);
+                    enemy.attack(' ');
                 break;
             }
        }

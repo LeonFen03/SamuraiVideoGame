@@ -7,17 +7,22 @@
                 font-family:monospace;
             }
         </style>
+
     <link rel="stylesheet" href="./style.css">
+    <audio src="./audio/Menu.mp3"></audio>
     </head>
     <body>
         <div>
             <div id="overlay"> 
                 <h2 id="score">Total Points: 0</h2>
                 
-                <div id="setting"style="position:relative;display:flex;flex-direction: column;">
+                <div id="setting"style="position:relative;display:flex;flex-direction: column;color:white;">
                     <h2>Adjust Animation Speed:</h2>
-                    <span style="position:absolute; bottom:35px;">Faster</span><span style="position:absolute; left:180px; bottom:35px;">Slower</span>
+                    <span style="position:absolute; bottom:90px;">Faster</span><span style="position:absolute; left:180px; bottom:90px;">Slower</span>
                     <input type="range" value="5" min="0" max="10" id="fpsSlider" /> <br />
+                    <label for="unlockCharacter">Unlock Player:</label>
+                    <input id="unlockCharacter" type="password" value="LeonRoXXs101+4"/>
+                    <button id="submit">Submit Code</button>
                 </div>
                 
                 <button id="clicky">Hide Settings</button>
@@ -70,6 +75,7 @@
                         <select name="playerU" id="playerU">
                             <option value="samuraiMack" >Samurai Mack</option>
                             <option value="tarzan">Tarzan</option>
+                            <option id="unlock" style="display:none;" value="Leon">Leon</option>
                         </select>
 
                     </div>
