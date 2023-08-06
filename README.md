@@ -1,31 +1,34 @@
 Title: 
-#Samurai Video Game
+**#Samurai Video Game**
+
+
 This repository contains the code for a Samurai video game. The game provides a basic fighting experience without the use of AI, which aims to preserve the simplicity and innocence of older game cultures. It features limited avatars with unique attacks and appearances, basic animation, and music for each round.
 
-#Installation
+**#Installation**
 To install and run the Samurai Video Game on your local machine, follow these steps:
 
 Clone the repository to your local machine using Git:
 
 1.
 git clone https://github.com/your-username/SamuraiVideoGame.git
-Navigate to the cloned directory:
+
 2.
+_Navigate to the cloned directory:_
 cd SamuraiVideoGame
 Open the index.html file in your preferred web browser.
 
 Enjoy the Samurai Video Game!
 
-#Game's Objective
+**#Game's Objective**
 The objective of the game is to establish a basis for a storyline structure without hindering user imagination. The game excludes AI to maintain the reflective nature of older cultures, where AI was simply responsive to user movements without learning models.
 
-#User Experience
+**#User Experience**
 -It establishes a basis for a storyline structure without hindering user imagination. 
 - Componentent Fighting experience no AI needed
 	- excluding AI was the best decision for this game, this game if had AI would ruin the innocence nature of the game. This is reflective of a more older culture where AI was simply responsive to user movement without any incoporation of learning models. This is NOT because i lost to an AI replica used by a Javascript neuronal network
 	-No cooldowns for special moves compotency in smashing your key buttons is expected and is a underrated skill.
 
-#Functionality
+**#Functionality**
 The game's functionality is achieved through a series of JavaScript files and classes:
 
 Global Variables: The top of the page contains global variables representing the state of both invisible and visible settings.
